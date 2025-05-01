@@ -1,19 +1,26 @@
 // components/AllocationForm.js
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { FaPlusCircle, FaMinusCircle } from 'react-icons/fa';
 
 const AllocationForm = () => {
     const { dispatch, remaining, currency } = useContext(AppContext);
     const [name, setName] = useState('');
     const [cost, setCost] = useState('');
     const [action, setAction] = useState('Add');
-    const departments = ['Marketing', 'Finance', 'Sales', 'Human Resource', 'IT', 'Operations', 'R&D'];
+    const [category, setCategory] = useState('');
+    const sectors = [
+        'Marketing', 'Finance', 'Sales', 'Human Resource', 'IT',
+        'Operations', 'R&D', 'Legal', 'Customer Success', 'Innovation'
+    ];
+    const categories = ['Capital', 'Operational', 'Strategic', 'Emergency'];
 
     const submitEvent = () => {
         const expense = {
-            name: name,
+            name,
             cost: parseInt(cost),
+            category
         };
 
         if (action === 'Reduce') {
@@ -23,7 +30,7 @@ const AllocationForm = () => {
             });
         } else {
             if (expense.cost > remaining) {
-                alert("The cost cannot exceed remaining funds!");
+                alert("Insufficient liquidity reserve!");
                 return;
             }
             dispatch({
@@ -34,38 +41,72 @@ const AllocationForm = () => {
 
         setCost('');
         setName('');
+        setCategory('');
     };
 
     return (
         <Form>
-            <Row>
-                <Col sm>
+            <Row className="align-items-end">
+                <Col md={3}>
                     <Form.Group>
-                        <Form.Label>Department</Form.Label>
-                        <Form.Control
-                            as="select"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                        <Form.Label>Sector</Form.Label>
+                        <OverlayTrigger
+                            placement="top"
+                            overlay={<Tooltip>Select the department or sector</Tooltip>}
                         >
-                            <option value="">Select Department</option>
-                            {departments.map((dept) => (
-                                <option key={dept} value={dept}>{dept}</option>
-                            ))}
-                        </Form.Control>
+                            <Form.Control
+                                as="select"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            >
+                                <option value="">Select Sector</option>
+                                {sectors.map((sector) => (
+                                    <option key={sector} value={sector}>{sector}</option>
+                                ))}
+                            </Form.Control>
+                        </OverlayTrigger>
                     </Form.Group>
                 </Col>
-                <Col sm>
+                <Col md={3}>
                     <Form.Group>
-                        <Form.Label>Amount ({currency})</Form.Label>
-                        <Form.Control
-                            type="number"
-                            required
-                            value={cost}
-                            onChange={(e) => setCost(e.target.value)}
-                        />
+                        <Form.Label>Category</Form.Label>
+                        <OverlayTrigger
+                            placement="top"
+                            overlay={<Tooltip>Categorize the allocation type</Tooltip>}
+                        >
+                            <Form.Control
+                                as="select"
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                            >
+                                <option value="">Select Category</option>
+                                {categories.map((cat) => (
+                                    <option key={cat} value={cat}>{cat}</option>
+                                ))}
+                            </Form.Control>
+                        </OverlayTrigger>
                     </Form.Group>
                 </Col>
-                <Col sm>
+                <Col md={3}>
+                    <Form.Group>
+                        <Form.Label>Investment ({currency})</Form.Label>
+                        <OverlayTrigger
+                            placement="top"
+                            overlay={<Tooltip>Enter the amount to allocate</Tooltip>}
+                        >
+                            <InputGroup>
+                                <InputGroup.Text>{currency}</InputGroup.Text>
+                                <Form.Control
+                                    type="number"
+                                    required
+                                    value={cost}
+                                    onChange={(e) => setCost(e.target.value)}
+                                />
+                            </InputGroup>
+                        </OverlayTrigger>
+                    </Form.Group>
+                </Col>
+                <Col md={2}>
                     <Form.Group>
                         <Form.Label>Action</Form.Label>
                         <Form.Control
@@ -78,15 +119,19 @@ const AllocationForm = () => {
                         </Form.Control>
                     </Form.Group>
                 </Col>
-                <Col sm>
-                    <Button
-                        variant="primary"
-                        onClick={submitEvent}
-                        className="mt-4"
-                        disabled={!name || !cost || cost <= 0}
+                <Col md={1}>
+                    <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>{action === 'Add' ? 'Add allocation' : 'Reduce allocation'}</Tooltip>}
                     >
-                        Save
-                    </Button>
+                        <Button
+                            variant="primary"
+                            onClick={submitEvent}
+                            disabled={!name || !cost || cost <= 0 || !category}
+                        >
+                            {action === 'Add' ? <FaPlusCircle /> : <FaMinusCircle />}
+                        </Button>
+                    </OverlayTrigger>
                 </Col>
             </Row>
         </Form>
