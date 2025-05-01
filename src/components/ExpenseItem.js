@@ -1,8 +1,8 @@
 // components/ExpenseItem.js
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
-import { Button } from 'react-bootstrap';
-import { FaTrashAlt } from 'react-icons/fa';
+import { Button, Badge } from 'react-bootstrap';
+import { FaTrashAlt, FaChartBar } from 'react-icons/fa';
 
 const ExpenseItem = (props) => {
     const { dispatch, currency } = useContext(AppContext);
@@ -19,6 +19,19 @@ const ExpenseItem = (props) => {
             <td>{props.name}</td>
             <td>{currency}{props.cost.toLocaleString()}</td>
             <td>
+                <Badge bg={props.cost > 1000 ? 'warning' : 'success'}>
+                    {props.cost > 1000 ? 'High' : 'Stable'}
+                </Badge>
+            </td>
+            <td>
+                <Button
+                    variant="outline-primary"
+                    size="sm"
+                    className="me-2"
+                    onClick={() => alert('Analytics view coming soon!')}
+                >
+                    <FaChartBar />
+                </Button>
                 <Button
                     variant="danger"
                     size="sm"
