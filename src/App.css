@@ -1,9 +1,13 @@
-/* App.css */
+// App.css
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: Arial, sans-serif;
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 30px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .header {
@@ -98,4 +102,18 @@ h3 {
     color: #1a2a44;
     font-weight: 600;
     margin-bottom: 20px;
+}
+
+.dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.progress {
+    border-radius: 8px;
+}
+
+.badge {
+    font-size: 0.9rem;
+    padding: 6px 10px;
 }
