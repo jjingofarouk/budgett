@@ -1,7 +1,8 @@
 // components/Budget.js
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
-import { Card, Form, Button } from 'react-bootstrap';
+import { Card, Form, Button, InputGroup } from 'react-bootstrap';
+import { FaWallet } from 'react-icons/fa';
 
 const Budget = () => {
     const { budget, currency, dispatch } = useContext(AppContext);
@@ -22,23 +23,23 @@ const Budget = () => {
     };
 
     return (
-        <Card className='p-3'>
-            <h4>Budget: {currency}{budget.toLocaleString()}</h4>
-            <Form.Group>
+        <Card className='p-4'>
+            <h4><FaWallet className="me-2" /> Core Capital: {currency}{budget.toLocaleString()}</h4>
+            <InputGroup className="mt-3">
+                <InputGroup.Text>{currency}</InputGroup.Text>
                 <Form.Control
                     type="number"
                     value={newBudget}
                     onChange={handleBudgetChange}
-                    className="mt-2"
+                    placeholder="Enter new budget"
                 />
                 <Button
                     variant="primary"
                     onClick={submitBudget}
-                    className="mt-2"
                 >
-                    Update Budget
+                    Update Capital
                 </Button>
-            </Form.Group>
+            </InputGroup>
         </Card>
     );
 };
