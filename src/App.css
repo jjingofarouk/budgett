@@ -1,7 +1,8 @@
-// App.css
+/* src/App.css */
 body {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     font-family: Arial, sans-serif;
+    margin: 0;
 }
 
 .container {
@@ -34,14 +35,14 @@ h1 {
 
 .card {
     border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background: #fff;
 }
 
 .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 .alert {
@@ -53,14 +54,17 @@ h1 {
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.chart-container, .forecast-container, .insights-container, .collab-container {
+.chart-container,
+.forecast-container,
+.insights-container,
+.collab-container {
     background: #fff;
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-grid {
@@ -86,14 +90,16 @@ h1 {
     background: #2c4373;
 }
 
-.form-control, .form-select {
+.form-control,
+.form-select {
     border-radius: 8px;
     border: 1px solid #ced4da;
     padding: 10px;
     transition: border-color 0.3s ease;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
     border-color: #1a2a44;
     box-shadow: 0 0 0 0.2rem rgba(26, 42, 68, 0.25);
 }
@@ -106,7 +112,7 @@ h3 {
 
 .dropdown-menu {
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .progress {
