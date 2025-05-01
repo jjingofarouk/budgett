@@ -18,6 +18,7 @@ const ExpenseItem = (props) => {
         <tr>
             <td>{props.name}</td>
             <td>{currency}{props.cost.toLocaleString()}</td>
+            <td>{props.category}</td>
             <td>
                 <Badge bg={props.cost > 1000 ? 'warning' : 'success'}>
                     {props.cost > 1000 ? 'High' : 'Stable'}
@@ -28,7 +29,7 @@ const ExpenseItem = (props) => {
                     variant="outline-primary"
                     size="sm"
                     className="me-2"
-                    onClick={() => alert('Analytics view coming soon!')}
+                    onClick={() => alert(`Analytics for ${props.name} coming soon!`)}
                 >
                     <FaChartBar />
                 </Button>
