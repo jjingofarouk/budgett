@@ -1,182 +1,144 @@
-// context/AppContext.js
-import React, { createContext, useReducer, useEffect } from 'react';
+Below is a comprehensive `README.md` file for your VaultVision project, tailored for your GitHub repository `jjingofarouk/budgett`. The README provides an overview, setup instructions, features, usage, and contribution guidelines, formatted in Markdown for GitHub.
 
-export const AppReducer = (state, action) => {
-    switch (action.type) {
-        case 'ADD_EXPENSE': {
-            const totalBudget = state.expenses.reduce(
-                (total, expense) => total + expense.cost,
-                0
-            ) + action.payload.cost;
 
-            if (totalBudget <= state.budget) {
-                const expenseExists = state.expenses.find(exp => exp.name === action.payload.name);
-                let updatedExpenses;
+# VaultVision: Enterprise Wealth Architect
 
-                if (expenseExists) {
-                    updatedExpenses = state.expenses.map(exp => {
-                        if (exp.name === action.payload.name) {
-                            return { ...exp, cost: exp.cost + action.payload.cost };
-                        }
-                        return exp;
-                    });
-                } else {
-                    updatedExpenses = [
-                        ...state.expenses,
-                        {
-                            id: `${action.payload.name}-${Date.now()}`,
-                            name: action.payload.name,
-                            cost: action.payload.cost,
-                            category: action.payload.category
-                        }
-                    ];
-                }
+![VaultVision Logo](public/logo.png)
 
-                return {
-                    ...state,
-                    expenses: updatedExpenses,
-                    history: [
-                        ...state.history,
-                        {
-                            name: action.payload.name,
-                            cost: action.payload.cost,
-                            category: action.payload.category,
-                            date: new Date()
-                        }
-                    ]
-                };
-            } else {
-                alert('Insufficient liquidity reserve!');
-                return state;
-            }
-        }
+VaultVision is a sophisticated web application designed for enterprise budget management, offering real-time financial tracking, forecasting, and AI-powered insights. Built with React, Bootstrap, and Chart.js, it provides a modern, responsive interface for managing budgets, expenses, and team collaboration.
 
-        case 'RED_EXPENSE': {
-            const updatedExpenses = state.expenses
-                .map(exp => {
-                    if (exp.name === action.payload.name && exp.cost - action.payload.cost >= 0) {
-                        return { ...exp, cost: exp.cost - action.payload.cost };
-                    }
-                    return exp;
-                })
-                .filter(exp => exp.cost > 0);
+This project is hosted in the GitHub repository: [jjingofarouk/budgett](https://github.com/jjingofarouk/budgett).
 
-            return {
-                ...state,
-                expenses: updatedExpenses,
-                history: [
-                    ...state.history,
-                    {
-                        name: action.payload.name,
-                        cost: -action.payload.cost,
-                        category: action.payload.category,
-                        date: new Date()
-                    }
-                ]
-            };
-        }
+## Table of Contents
+- [Features](#features)
+- [Demo](#demo)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Technologies](#technologies)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-        case 'DELETE_EXPENSE': {
-            const deletedExpense = state.expenses.find(exp => exp.id === action.payload);
-            const updatedExpenses = state.expenses
-                .map(exp => {
-                    if (exp.id === action.payload) {
-                        return { ...exp, cost: 0 };
-                    }
-                    return exp;
-                })
-                .filter(exp => exp.cost > 0);
+## Features
+- **Budget Management**: Set and update enterprise budgets with real-time tracking of remaining funds.
+- **Expense Tracking**: Add, reduce, or delete expenses, categorized by type (Capital, Operational, Strategic, Emergency).
+- **Currency Selector**: Switch between global currencies with a searchable dropdown.
+- **Visual Analytics**: Visualize budget distribution with interactive pie and bar charts.
+- **Financial Forecasting**: Project future capital with adjustable timeframes, confidence levels, and scenarios (base, optimistic, pessimistic).
+- **AI Insights**: Receive automated recommendations based on spending patterns and budget health.
+- **Collaboration Hub**: Team messaging system with role-based communication and notifications.
+- **Transaction Ledger**: View and filter expense history, with export and clear options.
+- **Responsive Design**: Optimized for desktop and mobile devices using Bootstrap.
+- **Local Storage**: Persists expense history across sessions.
 
-            return {
-                ...state,
-                expenses: updatedExpenses,
-                history: [
-                    ...state.history,
-                    {
-                        name: deletedExpense.name,
-                        cost: -deletedExpense.cost,
-                        category: deletedExpense.category,
-                        date: new Date()
-                    }
-                ]
-            };
-        }
+## Demo
+A live demo is coming soon! For now, you can run the application locally by following the [Installation](#installation) instructions.
 
-        case 'SET_BUDGET': {
-            if (action.payload < 0) {
-                alert('Budget cannot be negative!');
-                return state;
-            }
-            return {
-                ...state,
-                budget: action.payload
-            };
-        }
+## Installation
+To set up VaultVision locally, follow these steps:
 
-        case 'CHG_CURRENCY': {
-            return {
-                ...state,
-                currency: action.payload
-            };
-        }
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/jjingofarouk/budgett.git
+   cd budgett
+   ```
 
-        case 'CLEAR_HISTORY': {
-            return {
-                ...state,
-                history: []
-            };
-        }
+2. **Install Dependencies**:
+   Ensure you have [Node.js](https://nodejs.org/) installed. Then run:
+   ```bash
+   npm install
+   ```
 
-        default:
-            return state;
-    }
-};
+3. **Start the Development Server**:
+   ```bash
+   npm start
+   ```
+   The app will open at `http://localhost:3000` in your default browser.
 
-const initialState = {
-    budget: 500000,
-    expenses: [
-        { id: 'Marketing-1', name: 'Marketing', cost: 50000, category: 'Strategic' },
-        { id: 'Finance-1', name: 'Finance', cost: 75000, category: 'Operational' },
-        { id: 'Sales-1', name: 'Sales', cost: 60000, category: 'Strategic' },
-        { id: 'Human Resource-1', name: 'Human Resource', cost: 45000, category: 'Operational' },
-        { id: 'IT-1', name: 'IT', cost: 80000, category: 'Capital' }
-    ],
-    currency: '£',
-    history: []
-};
+4. **Build for Production** (optional):
+   ```bash
+   npm run build
+   ```
+   This generates a production-ready build in the `build/` directory.
 
-export const AppContext = createContext();
+## Usage
+1. **Set Budget**: Update the core capital in the "Core Capital" card.
+2. **Select Currency**: Use the currency selector to choose a preferred currency (e.g., USD, EUR, GBP).
+3. **Manage Expenses**: Add, reduce, or delete expenses via the "Resource Allocation" form and "Strategic Allocations" table.
+4. **View Analytics**: Check the "Capital Distribution" chart for expense breakdowns (toggle between pie and bar views).
+5. **Forecast Capital**: Adjust the "Capital Forecast" settings (months, confidence, scenario) to project future budgets.
+6. **Review Insights**: Read AI-generated recommendations in the "AI-Powered Insights" section and share them.
+7. **Collaborate**: Send and view team messages in the "Collaboration Hub" with role-based identities.
+8. **Track History**: Filter, sort, and export transaction history in the "Transaction Ledger" section.
 
-export const AppProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(AppReducer, initialState);
-    const remaining = state.budget - state.expenses.reduce((total, item) => total + item.cost, 0);
+## Project Structure
+```
+budgett/
+├── public/
+│   ├── index.html        # HTML entry point
+│   ├── logo.png          # Placeholder logo
+│   └── manifest.json     # Web app manifest
+├── src/
+│   ├── components/       # React components
+│   │   ├── AIInsights.js
+│   │   ├── AllocationForm.js
+│   │   ├── Budget.js
+│   │   ├── BudgetChart.js
+│   │   ├── BudgetForecast.js
+│   │   ├── CollaborationPanel.js
+│   │   ├── CurrencySelector.js
+│   │   ├── ExpenseHistory.js
+│   │   ├── ExpenseItem.js
+│   │   ├── ExpenseList.js
+│   │   ├── ExpenseTotal.js
+│   │   └── Remaining.js
+│   ├── context/
+│   │   └── AppContext.js # Global state management
+│   ├── App.js            # Main app component
+│   ├── App.css           # Global styles
+│   ├── index.js          # React entry point
+│   └── index.css         # Additional global styles
+├── package.json          # Project dependencies and scripts
+└── README.md             # Project documentation
+```
 
-    useEffect(() => {
-        const storedHistory = localStorage.getItem('expenseHistory');
-        if (storedHistory) {
-            dispatch({
-                type: 'SET_HISTORY',
-                payload: JSON.parse(storedHistory)
-            });
-        }
-    }, []);
+## Technologies
+- **React**: Frontend library for building UI components.
+- **React-Bootstrap**: Bootstrap components for React.
+- **Chart.js**: Data visualization for charts.
+- **React-Chartjs-2**: React wrapper for Chart.js.
+- **React-Icons**: Icon library for UI elements.
+- **UUID**: Unique ID generation for messages and expenses.
+- **Bootstrap**: CSS framework for responsive design.
+- **LocalStorage**: Persists expense history.
 
-    useEffect(() => {
-        localStorage.setItem('expenseHistory', JSON.stringify(state.history));
-    }, [state.history]);
+## Contributing
+Contributions are welcome! To contribute:
 
-    return (
-        <AppContext.Provider
-            value={{
-                budget: state.budget,
-                expenses: state.expenses,
-                remaining,
-                currency: state.currency,
-                history: state.history,
-                dispatch
-            }}
-        >
-            {children}
-        </AppContext.Provider>
-    );
-};
+1. Fork the repository: [jjingofarouk/budgett](https://github.com/jjingofarouk/budgett).
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature/your-feature
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Add your feature"
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature/your-feature
+   ```
+5. Open a Pull Request with a clear description of your changes.
+
+Please ensure your code follows the project's coding style and includes tests where applicable.
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+For questions or feedback, reach out via:
+- GitHub: [jjingofarouk](https://github.com/jjingofarouk)
+- Issues: [jjingofarouk/budgett/issues](https://github.com/jjingofarouk/budgett/issues)
+
+Happy budgeting with VaultVision!
