@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import ExpenseItem from './ExpenseItem';
-import { Table } from 'react-bootstrap';
+import { Table, Badge } from 'react-bootstrap';
 
 const ExpenseList = () => {
     const { expenses } = useContext(AppContext);
@@ -11,8 +11,9 @@ const ExpenseList = () => {
         <Table striped bordered hover>
             <thead>
                 <tr>
-                    <th>Department</th>
-                    <th>Allocated Budget</th>
+                    <th>Sector</th>
+                    <th>Investment</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
